@@ -1,35 +1,75 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import "./App.css";
+import Files from "./pages/FilesPage";
+import Image from "./pages/ImagePage";
+import Home, { loader as eventsLoader } from "./pages/HomePage";
+import Quiz, { loader as fetchQuiz } from "./pages/QuizPage";
+
+const router = createBrowserRouter([
+	{
+		path: "/",
+		// 	element: <RootLayout />,
+		// 	errorElement: <ErrorPage />,
+		children: [
+			{
+				index: true,
+				element: <Home />,
+				loader: eventsLoader,
+			},
+			{
+				path: "files",
+				element: <Files />,
+			},
+			{
+				path: "quizzes/:quizId",
+				element: <Quiz />,
+				loader: fetchQuiz,
+			},
+			{
+				path: "image",
+				element: <Image />,
+			},
+		],
+	},
+]);
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+	return <RouterProvider router={router} />;
 }
 
-export default App
+export default App;
+
+// import { useState } from "react";
+// import axios from "axios";
+
+// function App() {
+// 	const [file, setFile] = useState();
+// 	const upload = () => {
+// 		const formData = new FormData();
+// 		formData.append("file", file);
+// 		formData.append("dir", "sa");
+// 		axios
+// 			.post("http://localhost:3001/test-upload", formData)
+// 			.then((res) => {
+// 				console.log(res);
+// 			})
+// 			.catch((er) => console.log(er));
+// 	};
+// 	return (
+// 		<div>
+// 			<input
+// 				type="file"
+// 				onChange={(e) => setFile(e.target.files[0])}
+// 			/>
+// 			<button
+// 				type="button"
+// 				onClick={upload}
+// 			>
+// 				Upload
+// 			</button>
+// 		</div>
+// 	);
+// }
+
+// export default App;
