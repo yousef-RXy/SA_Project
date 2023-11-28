@@ -16,12 +16,14 @@ export default function Home() {
 
 	return (
 		<>
-			{quizzes.map((quiz) => (
-				<QuizComponent
-					key={quiz.id}
-					quiz={quiz}
-				/>
-			))}
+			<div className="bg-zinc-50 grid md:grid-cols-5 grid-cols-2 gap-4 p-8">
+				{quizzes.map((quiz) => (
+					<QuizComponent
+						key={quiz.id}
+						quiz={quiz}
+					/>
+				))}
+			</div>
 			<p onClick={clickHandler}>files</p>
 		</>
 	);
