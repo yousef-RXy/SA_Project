@@ -1,52 +1,32 @@
-import { useLocation } from "react-router-dom";
-import { ref, listAll, getMetadata } from "firebase/storage";
-import { storage } from "../config/firebaseConfig";
-import { useEffect, useState } from "react";
+import axios from "axios";
+import { useLoaderData } from "react-router-dom";
 import File from "../components/File";
+
 // eslint-disable-next-line react/prop-types
 export default function Files() {
-	const [files, setFiles] = useState([]);
-	const { state } = useLocation();
-	const subject = state.subject;
-
-	useEffect(() => {
-		async function getFiles() {
-			try {
-				const dirRef = ref(storage, `${subject}/`);
-
-				const filesRef = await listAll(dirRef);
-
-				filesRef.items.forEach(async (fileRef) => {
-					const fileMetadata = await getMetadata(fileRef);
-
-					const file = {
-						id: Math.random().toString(),
-						fullPath: fileRef.fullPath,
-						name: fileRef.name,
-						contentType: fileMetadata.contentType,
-					};
-
-					setFiles((prevState) => [...prevState, file]);
-				});
-			} catch (error) {
-				console.log(error);
-			}
-		}
-
-		getFiles();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	const files = useLoaderData();
 	return (
-		<div className="bg-zinc-50 grid md:grid-cols-5 grid-cols-2 gap-4 p-8">
-			{files &&
+		<div className="bg-zinc-300 grid md:grid-cols-3 lg:grid-cols-5 grid-cols-2 gap-8 p-8">
+			{files[0] !== undefined ? (
 				files.map((file) => (
 					<File
 						key={file.id}
 						contentType={file.contentType}
 						name={file.name}
-						fullPath={file.fullPath}
+						url={file.downloadURL}
 					/>
-				))}
+				))
+			) : (
+				<p>There is no files right now</p>
+			)}
 		</div>
 	);
+}
+
+// eslint-disable-next-line no-unused-vars, react-refresh/only-export-components
+export async function loader({ request, params }) {
+	const subject = params.subId;
+
+	const res = await axios.get("http://localhost:3001/listfiles/" + subject);
+	return res.data.files;
 }

@@ -1,0 +1,102 @@
+import axios from "axios";
+import { json, redirect } from "react-router-dom";
+import AuthForm from "../components/AuthForm";
+import { updateUser } from "../util/http";
+import {
+	hasMinLength,
+	isEqualsToOtherValue,
+	isNotEmpty,
+} from "../util/validation";
+
+export default function AuthenticationPage() {
+	return <AuthForm />;
+}
+
+export async function action({ request }) {
+	const searchParams = new URL(request.url).searchParams;
+	const mode = searchParams.get("mode") || "login";
+
+	if (mode !== "login" && mode !== "signup") {
+		throw json({ message: "Unsupported mode." }, { status: 422 });
+	}
+
+	const data = await request.formData();
+	const email = data.get("email");
+	const password = data.get("password");
+	if (!isNotEmpty(email))
+		return json({ message: "email is empty." }, { status: 500 });
+	if (!isNotEmpty(password))
+		return json({ message: "Password is empty." }, { status: 500 });
+	if (!hasMinLength(password, 6))
+		return json({ message: "Password is Short." }, { status: 500 });
+	if (mode === "signup") {
+		const passConfirm = data.get("password-confirmation");
+		if (!isNotEmpty(passConfirm))
+			return json(
+				{ message: "Password-confirmation is empty." },
+				{ status: 500 }
+			);
+		else if (!isEqualsToOtherValue(password, passConfirm))
+			return json(
+				{ message: "The Password and the Password-confirmation is not equal." },
+				{ status: 500 }
+			);
+	}
+	const authData = {
+		email,
+		password,
+	};
+
+	const res = await axios.post(`http://localhost:3001/${mode}`, authData);
+
+	if (res.data.status === 422 || res.data.status === 401) {
+		console.log(res.data);
+		return res;
+	}
+
+	const resOK = res && res.data.status === 200 && res.statusText === "OK";
+
+	if (!resOK) {
+		console.log(res.data);
+		throw json({ message: "Could not authenticate user." }, { status: 500 });
+	}
+	const token = res.data.user.uid;
+
+	const initUser = {
+		token: token,
+		subjects: {},
+		totalHours: 0,
+		totalGpa: 0,
+		isAdmin: false,
+	};
+	mode === "login" ? getUser(token) : updateUser(initUser);
+
+	localStorage.setItem("user", JSON.stringify(initUser));
+
+	return redirect(mode === "login" ? "/" : "/userdata");
+}
+
+async function getUser(token) {
+	const res = await axios.get("http://localhost:3001/user/" + token);
+
+	if (res.data.status === 422 || res.data.status === 401) {
+		console.log(res.data);
+		return res;
+	}
+
+	const resOK = res && res.data.status === 200 && res.statusText === "OK";
+
+	if (!resOK) {
+		return redirect("/auth?mode=login");
+	}
+
+	const data = { ...res.data.user };
+	const user = {
+		token: data.token,
+		subjects: data.subjects,
+		totalHours: data.totalHours,
+		totalGpa: data.totalGpa,
+		isAdmin: data.isAdmin,
+	};
+	localStorage.setItem("user", JSON.stringify(user));
+}

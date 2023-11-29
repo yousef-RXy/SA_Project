@@ -11,16 +11,16 @@ const {
 	getDocs,
 	collection,
 	addDoc,
-	// setDoc,
-	// doc,
-	// deleteDoc,
-	// updateDoc,
+	doc,
+	setDoc,
 } = require("firebase/firestore");
 
 const {
 	ref,
 	uploadBytesResumable,
 	getDownloadURL,
+	listAll,
+	getMetadata,
 } = require("firebase/storage");
 
 const {
@@ -81,6 +81,18 @@ async function add(cName, data) {
 	}
 }
 
+async function update(cName, data, id) {
+	try {
+		const d = await setDoc(doc(db, cName, id), data);
+		console.log(d);
+		console.log(data);
+		console.log(id);
+		return d.id;
+	} catch (error) {
+		return error;
+	}
+}
+
 app.post("/signup", async (req, res) => {
 	let resObj = {};
 	try {
@@ -120,12 +132,32 @@ app.post("/login", async (req, res) => {
 });
 
 // eslint-disable-next-line no-unused-vars
+app.get("/user/:id", async (req, res) => {
+	const id = req.params.id;
+	const subjects = await get("users");
+	res.send({ status: 200, user: subjects[id] });
+});
+
+app.post("/user", async (req, res) => {
+	const token = req.body.token;
+	console.log(req.body.token);
+	console.log(req.body.subjects);
+	const id = await update("users", req.body, token);
+	res.send({ status: 200, id });
+});
+
+// eslint-disable-next-line no-unused-vars
+app.get("/subjects", async (req, res) => {
+	const subjects = await get("subjects");
+	res.send({ status: 200, subjects });
+});
+
+// eslint-disable-next-line no-unused-vars
 app.get("/quizzes", async (req, res) => {
 	const quizzes = await get("quizzes");
 	res.send({ status: 200, quizzes });
 });
 
-// eslint-disable-next-line no-unused-vars
 app.get("/quiz/:id", async (req, res) => {
 	const id = req.params.id;
 	const quizzes = await get("quizzes");
@@ -135,8 +167,6 @@ app.get("/quiz/:id", async (req, res) => {
 // eslint-disable-next-line no-unused-vars
 app.post("/addquiz", async (req, res) => {
 	const id = await add("quizzes", req.body.quiz);
-	console.log(req.body.quiz);
-	console.log(id);
 	res.send({ status: 200, id });
 });
 
@@ -162,17 +192,30 @@ app.post("/uploadfile", upload, async (req, res) => {
 	}
 });
 
-app.post("/getfile", async (req, res) => {
-	const fileUrl = req.body.fullPath;
-	const fileRef = ref(storage, fileUrl);
-	const file = await getDownloadURL(fileRef);
-	console.log(file);
-	res.send({
-		status: "SUCCESS",
-		file,
-	});
+app.get("/listfiles/:id", async (req, res) => {
+	const id = req.params.id;
+	try {
+		const dirRef = ref(storage, id);
+
+		const filesRef = await listAll(dirRef);
+		let files = [];
+		for (const fileRef of filesRef.items) {
+			const fileMetadata = await getMetadata(fileRef);
+			const file = {
+				id: Math.random().toString(),
+				fullPath: fileRef.fullPath,
+				name: fileRef.name,
+				contentType: fileMetadata.contentType,
+				downloadURL: await getDownloadURL(ref(storage, fileRef.fullPath)),
+			};
+			files = [...files, file];
+		}
+		res.send({ status: 200, files });
+	} catch (error) {
+		return error;
+	}
 });
 
 app.listen(3001, () => {
-	console.log("Server is running");
+	console.log("Server is running on 3001");
 });

@@ -1,15 +1,17 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
-import "./App.css";
-import Files from "./pages/FilesPage";
-import Image from "./pages/ImagePage";
+import Files, { loader as fetchFile } from "./pages/FilesPage";
 import Home, { loader as eventsLoader } from "./pages/HomePage";
 import Quiz, { loader as fetchQuiz } from "./pages/QuizPage";
+import UserData, { loader as fetchSubjects } from "./pages/UserDataPage";
+import AuthenticationPage, {
+	action as authAction,
+} from "./pages/Authentication.jsx";
+import RootLayout from "./pages/Root.jsx";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
-		// 	element: <RootLayout />,
+		element: <RootLayout />,
 		// 	errorElement: <ErrorPage />,
 		children: [
 			{
@@ -18,8 +20,9 @@ const router = createBrowserRouter([
 				loader: eventsLoader,
 			},
 			{
-				path: "files",
+				path: "files/:subId",
 				element: <Files />,
+				loader: fetchFile,
 			},
 			{
 				path: "quizzes/:quizId",
@@ -27,10 +30,16 @@ const router = createBrowserRouter([
 				loader: fetchQuiz,
 			},
 			{
-				path: "image",
-				element: <Image />,
+				path: "userdata",
+				element: <UserData />,
+				loader: fetchSubjects,
 			},
 		],
+	},
+	{
+		path: "/auth",
+		element: <AuthenticationPage />,
+		action: authAction,
 	},
 ]);
 
