@@ -166,6 +166,7 @@ app.get("/quiz/:id", async (req, res) => {
 
 // eslint-disable-next-line no-unused-vars
 app.post("/addquiz", async (req, res) => {
+	console.log(req.body.quiz);
 	const id = await add("quizzes", req.body.quiz);
 	res.send({ status: 200, id });
 });

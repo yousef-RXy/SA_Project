@@ -3,7 +3,7 @@ import { useLoaderData } from "react-router-dom";
 
 export default function Quiz() {
 	const { quiz } = useLoaderData();
-	// console.log(quiz);
+	console.log(quiz);
 	return <>hi</>;
 }
 

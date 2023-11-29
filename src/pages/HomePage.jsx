@@ -1,15 +1,19 @@
 /* eslint-disable no-unused-vars */
-import { useLoaderData, Link } from "react-router-dom";
-
+import { useLoaderData } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { addQuiz } from "../util/http";
 import axios from "axios";
 import QuizComponent from "../components/QuizComponent";
 
 export default function Home() {
+	const subjectsObj = useSelector((state) => state.user.subjects);
+	const subjects = Object.values(subjectsObj);
 	const quizzesObj = useLoaderData();
 	const quizzes = Object.values(quizzesObj);
+	addQuiz();
 	return (
 		<>
-			<div className="bg-zinc-50 grid md:grid-cols-5 grid-cols-2 gap-4 p-8">
+			<div className=" grid md:grid-cols-5 grid-cols-2 gap-4 p-8">
 				{quizzes.map((quiz) => (
 					<QuizComponent
 						key={quiz.id}
@@ -17,7 +21,6 @@ export default function Home() {
 					/>
 				))}
 			</div>
-			<Link to="files/sa">files</Link>
 		</>
 	);
 }

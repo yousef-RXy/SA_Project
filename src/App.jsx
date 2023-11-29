@@ -7,6 +7,7 @@ import AuthenticationPage, {
 	action as authAction,
 } from "./pages/Authentication.jsx";
 import RootLayout from "./pages/Root.jsx";
+import AddFile from "./pages/AddFilePage.jsx";
 
 const router = createBrowserRouter([
 	{
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
 				element: <UserData />,
 				loader: fetchSubjects,
 			},
+			{
+				path: "addfile",
+				element: <AddFile />,
+			},
 		],
 	},
 	{
@@ -48,37 +53,3 @@ function App() {
 }
 
 export default App;
-
-// import { useState } from "react";
-// import axios from "axios";
-
-// function App() {
-// 	const [file, setFile] = useState();
-// 	const upload = () => {
-// 		const formData = new FormData();
-// 		formData.append("file", file);
-// 		formData.append("dir", "sa");
-// 		axios
-// 			.post("http://localhost:3001/test-upload", formData)
-// 			.then((res) => {
-// 				console.log(res);
-// 			})
-// 			.catch((er) => console.log(er));
-// 	};
-// 	return (
-// 		<div>
-// 			<input
-// 				type="file"
-// 				onChange={(e) => setFile(e.target.files[0])}
-// 			/>
-// 			<button
-// 				type="button"
-// 				onClick={upload}
-// 			>
-// 				Upload
-// 			</button>
-// 		</div>
-// 	);
-// }
-
-// export default App;
