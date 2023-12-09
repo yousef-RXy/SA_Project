@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useLoaderData } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { addQuiz } from "../util/http";
 import axios from "axios";
 import QuizComponent from "../components/QuizComponent";
 
@@ -10,7 +9,6 @@ export default function Home() {
 	const subjects = Object.values(subjectsObj);
 	const quizzesObj = useLoaderData();
 	const quizzes = Object.values(quizzesObj);
-	addQuiz();
 	return (
 		<>
 			<div className=" grid md:grid-cols-5 grid-cols-2 gap-4 p-8">

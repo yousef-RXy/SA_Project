@@ -14,7 +14,6 @@ function AuthForm() {
 	const [searchParams] = useSearchParams();
 	const isLogin = searchParams.get("mode") === "login";
 	const isSubmitting = navigation.state === "submitting";
-	console.log(data);
 	return (
 		<>
 			<Form

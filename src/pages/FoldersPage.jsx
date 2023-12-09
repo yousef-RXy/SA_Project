@@ -1,4 +1,5 @@
 import Folder from "../components/Folder";
+import { useSelector } from "react-redux";
 
 export default function Folders() {
 	const subjectsObj = useSelector((state) => state.user.subjects);

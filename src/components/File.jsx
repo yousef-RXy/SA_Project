@@ -11,7 +11,7 @@ export default function File({ name, contentType, url }) {
 	const [modalOpen, setModalOpen] = useState(false);
 
 	return (
-		<div className="drop-shadow place-items-center hover:bg-sky-100 bg-neutral-100 rounded-3xl grid gap-y-2 grid-cols-1 grid-rows-3 p-4">
+		<div className=" transition-all drop-shadow place-items-center hover:bg-sky-100 bg-neutral-100 rounded-3xl grid gap-y-2 grid-cols-1 grid-rows-3 p-4">
 			<img
 				className="row-span-2 w-28"
 				src={isPDF ? PDFLogo : url}

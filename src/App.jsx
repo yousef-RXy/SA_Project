@@ -8,6 +8,8 @@ import AuthenticationPage, {
 } from "./pages/Authentication.jsx";
 import RootLayout from "./pages/Root.jsx";
 import AddFile from "./pages/AddFilePage.jsx";
+import Folders from "./pages/FoldersPage.jsx";
+import GpaCalculator from "./pages/GpaCalculatorPage.jsx";
 
 const router = createBrowserRouter([
 	{
@@ -19,6 +21,10 @@ const router = createBrowserRouter([
 				index: true,
 				element: <Home />,
 				loader: eventsLoader,
+			},
+			{
+				path: "files",
+				element: <Folders />,
 			},
 			{
 				path: "files/:subId",
@@ -36,8 +42,14 @@ const router = createBrowserRouter([
 				loader: fetchSubjects,
 			},
 			{
+				path: "gpa",
+				element: <GpaCalculator />,
+				// loader: fetchSubjects,
+			},
+			{
 				path: "addfile",
 				element: <AddFile />,
+				loader: fetchSubjects,
 			},
 		],
 	},

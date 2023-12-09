@@ -8,6 +8,7 @@ const userSlice = createSlice({
 		subjects: {},
 		totalHours: 0,
 		totalGpa: 0,
+		points: 0,
 		isAdmin: false,
 	},
 	reducers: {
@@ -26,10 +27,13 @@ const userSlice = createSlice({
 			state.isAdmin = false;
 		},
 		updateGpa(state, action) {
-			state.totalHours = action.payload.totalGpa;
-			state.totalGpa = action.payload.totalHours;
+			state.totalHours = action.payload.totalHours;
+			state.totalGpa = action.payload.totalGpa;
 		},
 		updateSubjects(state, action) {
+			state.subjects = action.payload;
+		},
+		updatePoints(state, action) {
 			state.subjects = action.payload;
 		},
 	},

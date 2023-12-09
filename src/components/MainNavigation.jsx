@@ -4,15 +4,19 @@ import { userActions } from "../store/user-slice";
 import { IoAddOutline } from "react-icons/io5";
 import { CiFileOn, CiSquareCheck } from "react-icons/ci";
 import { useState } from "react";
+import { CiFolderOn } from "react-icons/ci";
+import { CiUser } from "react-icons/ci";
 
 // eslint-disable-next-line react/prop-types
 function MainNavigation() {
 	const [showAddIcons, setShowAddIcons] = useState(false);
 	const dispatch = useDispatch();
-	const def = "rounded-full hover:bg-[#005CC8] hover:text-white p-4";
+	const def =
+		"transition-all text-center flex items-center duration-200 w-12 h-12 rounded-full hover:bg-[#005CC8] hover:text-white";
 	const active = def + " bg-[#005CC8] text-white";
 	const navigate = useNavigate();
-	const isAdmin = useSelector((state) => state.user.isAdmin);
+	const user = useSelector((state) => state.user);
+	const isAdmin = user.isAdmin;
 	const addStyle = isAdmin
 		? "transition-all relative flex justify-center cursor-pointer font-bold text-3xl text-white"
 		: "hidden";
@@ -47,23 +51,37 @@ function MainNavigation() {
 				>
 					<p>Studently</p>
 				</NavLink>
-				<button
-					onClick={logoutClickHandler}
-					className="transition-all mx-3 px-3 text-lg text-white rounded-xl bg-[#005cc8] hover:bg-[#004a9e]"
-				>
-					Logout
-				</button>
+				<div className="flex justify-between">
+					<p
+						className={`text-white bg-[#005CC8] text-center flex items-center w-16 rounded-xl`}
+					>
+						<p className=" w-full">{user.points}</p>
+					</p>
+					<button
+						onClick={logoutClickHandler}
+						className="transition-all mx-3 px-3 text-lg text-white rounded-xl bg-[#005cc8] hover:bg-[#004a9e]"
+					>
+						Logout
+					</button>
+				</div>
 			</header>
 			<header className=" justify-between z-10 flex flex-col max-w-4xl p-7 bg-[#fafafa] border-solid border-x-2 border-black col-span-1 row-start-2 ">
 				<nav>
-					<ul className="flex flex-col items-center gap-8">
+					<ul className="flex flex-col items-center gap-4">
 						<li>
 							<NavLink
-								to=""
-								className={({ isActive }) => (isActive ? active : def)}
-								end
+								to="/gpa"
+								className={`text-white bg-[#005CC8] ${def}`}
 							>
-								Home
+								<p className=" w-full">{user.totalGpa}</p>
+							</NavLink>
+						</li>
+						<li>
+							<NavLink
+								to="/files"
+								className={({ isActive }) => (isActive ? active : def)}
+							>
+								<CiFolderOn className="w-full text-2xl" />
 							</NavLink>
 						</li>
 						<li>
@@ -71,7 +89,7 @@ function MainNavigation() {
 								to="userdata"
 								className={({ isActive }) => (isActive ? active : def)}
 							>
-								User
+								<CiUser className="w-full text-2xl" />
 							</NavLink>
 						</li>
 					</ul>

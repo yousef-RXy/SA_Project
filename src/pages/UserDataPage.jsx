@@ -20,7 +20,7 @@ export default function UserData() {
 		const data = Object.fromEntries(subject.entries());
 		data.box = boxChannel;
 
-		if (data.box.length < 6 || data.box.length > 7) {
+		if (data.box.length < 4 || data.box.length > 7) {
 			setError(true);
 		} else {
 			setError(false);
@@ -31,10 +31,7 @@ export default function UserData() {
 				obj = { ...obj, [x++]: { name: eArray[0], hours: eArray[1] } };
 			});
 			dispatch(userActions.updateSubjects(obj));
-			const localUser = JSON.parse(localStorage.getItem("user"));
-			const isLogin =
-				localUser && localUser.token !== "" && localUser.token !== null;
-			isLogin && updateUser({ ...user, subjects: obj });
+			updateUser({ ...user, subjects: obj });
 		}
 	}
 
@@ -44,7 +41,7 @@ export default function UserData() {
 				Choose Your Subjects!
 			</h1>
 			<form
-				className="w-[450px] p-6 rounded-2xl border-solid border-2 border-black flex flex-col gap-1 bg-[#fafafa]"
+				className=" w-[450px] p-6 rounded-2xl border-solid border-2 border-black flex flex-col gap-1 bg-[#fafafa]"
 				onSubmit={handleSubmit}
 			>
 				{subjects.map((sub) => {
@@ -54,22 +51,22 @@ export default function UserData() {
 							className="flex items-center justify-between m-3 text-[22px]"
 							key={sub.id}
 						>
+							<label>{sub.value}</label>
 							<input
 								type="checkbox"
 								name="box"
 								value={subject}
 							/>
-							<label>{sub.value}</label>
 						</div>
 					);
 				})}
-				<button className=" text-white bg-[#005cc8] px-3 py-2 text-lg uppercase rounded-xl cursor-pointer hover:bg-[#004a9e]">
+				<button className="transition-all text-white bg-[#005cc8] px-3 py-2 text-lg uppercase rounded-xl cursor-pointer hover:bg-[#004a9e]">
 					Save
 				</button>
 			</form>
 			{error && (
 				<p className=" text-center text-red-500 m-1">
-					You can register 6 or 7 subjects only
+					You can register 4 or 7 subjects only
 				</p>
 			)}
 		</div>
