@@ -10,6 +10,7 @@ import RootLayout from "./pages/Root.jsx";
 import AddFile from "./pages/AddFilePage.jsx";
 import Folders from "./pages/FoldersPage.jsx";
 import GpaCalculator from "./pages/GpaCalculatorPage.jsx";
+import AddQuizForm from "./components/AddQuizForm.jsx";
 
 const router = createBrowserRouter([
 	{
@@ -50,6 +51,11 @@ const router = createBrowserRouter([
 				path: "addfile",
 				element: <AddFile />,
 				loader: fetchSubjects,
+			},
+			{
+				path: "addquiz",
+				element: <AddQuizForm />,
+				loader: fetchQuiz,
 			},
 		],
 	},

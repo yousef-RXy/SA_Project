@@ -11,14 +11,29 @@ export default function Home() {
 	const quizzes = Object.values(quizzesObj);
 	return (
 		<>
-			<div className=" grid md:grid-cols-5 grid-cols-2 gap-4 p-8">
-				{quizzes.map((quiz) => (
-					<QuizComponent
-						key={quiz.id}
-						quiz={quiz}
-					/>
-				))}
+
+    		<div className="container-fluid align-content-center">
+  
+        		<div className="row align-content-center">
+
+        		    <div className="col-md-5 QuizeesSection example">
+        		        <h2 className="sectionTitle"><i className="fas fa-graduation-cap"></i> Quizees</h2>
+
+
+						{quizzes.map((quiz) => (  <QuizComponent key={quiz.id} quiz={quiz} /> ))}
+
+
+
+
+        			</div>
+
+
+				</div>
 			</div>
+
+
+
+
 		</>
 	);
 }

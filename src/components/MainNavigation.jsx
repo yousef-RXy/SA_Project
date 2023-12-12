@@ -33,7 +33,7 @@ function MainNavigation() {
 	}
 
 	function quizClickHandler() {
-		setShowAddIcons((state) => !state);
+		navigate("/addquiz");
 	}
 
 	function logoutClickHandler() {
@@ -65,9 +65,18 @@ function MainNavigation() {
 					</button>
 				</div>
 			</header>
+
 			<header className=" justify-between z-10 flex flex-col max-w-4xl p-7 bg-[#fafafa] border-solid border-x-2 border-black col-span-1 row-start-2 ">
 				<nav>
 					<ul className="flex flex-col items-center gap-4">
+						<li>
+							<NavLink
+								to={""}
+								className="mx-3 font-extrabold text-2xl text-center flex items-center"
+							>
+								<span className="fas fa-home w-full text-2xl"></span>
+							</NavLink>
+						</li>
 						<li>
 							<NavLink
 								to="/gpa"
@@ -110,7 +119,7 @@ function MainNavigation() {
 					<div
 						onClick={quizClickHandler}
 						className={
-							"hidden z-10 duration-300 transform transition-all p-1 cursor-pointer text-2xl text-white bg-[#005cc8] hover:bg-[#004a9e] rounded-lg absolute " +
+							" z-10 duration-300 transform transition-all p-1 cursor-pointer text-2xl text-white bg-[#005cc8] hover:bg-[#004a9e] rounded-lg absolute " +
 							quizIconsStyle
 						}
 					>
