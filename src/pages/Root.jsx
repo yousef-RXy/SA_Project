@@ -1,8 +1,5 @@
 import { Outlet, useLocation, Navigate, useNavigation } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { userActions } from "../store/user-slice";
 import MainNavigation from "../components/MainNavigation";
-import { useEffect } from "react";
 import BeatLoader from "react-spinners/BeatLoader";
 
 const override = {
@@ -14,14 +11,10 @@ const override = {
 
 export default function RootLayout() {
 	const location = useLocation();
-	const dispatch = useDispatch();
 	const navigation = useNavigation();
 	const isLoading = navigation.state === "loading";
 	const user = JSON.parse(localStorage.getItem("user"));
 	const isLogin = user && user.token !== "" && user.token !== null;
-	useEffect(() => {
-		isLogin && dispatch(userActions.setUser(user));
-	}, []);
 
 	return (
 		<>

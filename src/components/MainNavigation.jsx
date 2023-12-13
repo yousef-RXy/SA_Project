@@ -1,21 +1,18 @@
+import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { userActions } from "../store/user-slice";
 import { IoAddOutline } from "react-icons/io5";
 import { CiFileOn, CiSquareCheck } from "react-icons/ci";
-import { useState } from "react";
 import { CiFolderOn } from "react-icons/ci";
 import { CiUser } from "react-icons/ci";
 
 // eslint-disable-next-line react/prop-types
 function MainNavigation() {
 	const [showAddIcons, setShowAddIcons] = useState(false);
-	const dispatch = useDispatch();
 	const def =
 		"transition-all text-center flex items-center duration-200 w-12 h-12 rounded-full hover:bg-[#005CC8] hover:text-white";
 	const active = def + " bg-[#005CC8] text-white";
 	const navigate = useNavigate();
-	const user = useSelector((state) => state.user);
+	const user = JSON.parse(localStorage.getItem("user"));
 	const isAdmin = user.isAdmin;
 	const addStyle = isAdmin
 		? "transition-all relative flex justify-center cursor-pointer font-bold text-3xl text-white"
@@ -37,7 +34,6 @@ function MainNavigation() {
 	}
 
 	function logoutClickHandler() {
-		dispatch(userActions.rmvUser());
 		localStorage.removeItem("user");
 		navigate("/auth?mode=login");
 	}
@@ -69,14 +65,6 @@ function MainNavigation() {
 			<header className=" justify-between z-10 flex flex-col max-w-4xl p-7 bg-[#fafafa] border-solid border-x-2 border-black col-span-1 row-start-2 ">
 				<nav>
 					<ul className="flex flex-col items-center gap-4">
-						<li>
-							<NavLink
-								to={""}
-								className="mx-3 font-extrabold text-2xl text-center flex items-center"
-							>
-								<span className="fas fa-home w-full text-2xl"></span>
-							</NavLink>
-						</li>
 						<li>
 							<NavLink
 								to="/gpa"

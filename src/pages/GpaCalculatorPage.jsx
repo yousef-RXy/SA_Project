@@ -1,16 +1,13 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { userActions } from "../store/user-slice";
 import { useNavigate } from "react-router-dom";
 import { updateUser } from "../util/http";
 
 export default function GpaCalculator() {
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	const [errorMessage, setErrorMessage] = useState("");
 
-	const user = useSelector((state) => state.user);
+	let user = JSON.parse(localStorage.getItem("user"));
 	const subjectsObj = user.subjects;
 	const subjects = Object.values(subjectsObj);
 
@@ -77,8 +74,10 @@ export default function GpaCalculator() {
 				(totalGrade / (totalCreditsValue + user.totalHours)).toFixed(2)
 			);
 			const obj = { totalHours, totalGpa };
-			dispatch(userActions.updateGpa(obj));
-			updateUser({ ...user, ...obj });
+			user = { ...user, ...obj };
+			console.log(user);
+			localStorage.setItem("user", JSON.stringify(user));
+			updateUser(user);
 			navigate("/");
 		}
 	};

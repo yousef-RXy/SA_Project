@@ -64,6 +64,7 @@ export async function action({ request }) {
 
 	const initUser = {
 		token: token,
+		points: 0,
 		subjects: {},
 		totalHours: 0,
 		totalGpa: 0,
@@ -93,6 +94,7 @@ async function getUser(token) {
 	const data = { ...res.data.user };
 	const user = {
 		token: data.token,
+		points: data.points,
 		subjects: data.subjects,
 		totalHours: data.totalHours,
 		totalGpa: data.totalGpa,

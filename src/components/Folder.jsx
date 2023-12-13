@@ -1,11 +1,8 @@
 /* eslint-disable react/prop-types */
-// import { Link, useNavigation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import folderLogo from "../assets/folder-svgrepo-com.svg";
 
 export default function Folder({ name }) {
-	// const navigation = useNavigation();
-	// console.log(navigation.state);
 	return (
 		<Link
 			to={`${name.toLowerCase()}`}

@@ -1,15 +1,13 @@
 import { useState } from "react";
-import { useLoaderData } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { userActions } from "../store/user-slice";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { updateUser } from "../util/http";
 
 export default function UserData() {
-	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const subjectsObj = useLoaderData();
 	const subjects = Object.values(subjectsObj);
-	const user = useSelector((state) => state.user);
+	let user = JSON.parse(localStorage.getItem("user"));
 	const [error, setError] = useState(false);
 
 	function handleSubmit(event) {
@@ -30,8 +28,10 @@ export default function UserData() {
 				const eArray = e.split(",");
 				obj = { ...obj, [x++]: { name: eArray[0], hours: eArray[1] } };
 			});
-			dispatch(userActions.updateSubjects(obj));
-			updateUser({ ...user, subjects: obj });
+			user = { ...user, subjects: obj };
+			localStorage.setItem("user", JSON.stringify(user));
+			updateUser(user);
+			navigate("/files");
 		}
 	}
 
