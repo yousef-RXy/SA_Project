@@ -14,7 +14,7 @@ export default function RootLayout() {
 	const navigation = useNavigation();
 	const isLoading = navigation.state === "loading";
 	const user = JSON.parse(localStorage.getItem("user"));
-	const isLogin = user && user.token !== "" && user.token !== null;
+	const isLogin = user && user._id !== "" && user._id !== null;
 
 	return (
 		<>

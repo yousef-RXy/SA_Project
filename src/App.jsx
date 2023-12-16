@@ -45,7 +45,6 @@ const router = createBrowserRouter([
 			{
 				path: "gpa",
 				element: <GpaCalculator />,
-				// loader: fetchSubjects,
 			},
 			{
 				path: "addfile",
@@ -55,7 +54,6 @@ const router = createBrowserRouter([
 			{
 				path: "addquiz",
 				element: <AddQuizForm />,
-				loader: fetchQuiz,
 			},
 		],
 	},

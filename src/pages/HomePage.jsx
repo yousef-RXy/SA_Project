@@ -19,7 +19,7 @@ export default function Home() {
 						</h2>
 						{quizzes.map((quiz) => (
 							<QuizComponent
-								key={quiz.id}
+								key={quiz._id}
 								quiz={quiz}
 							/>
 						))}
@@ -31,6 +31,6 @@ export default function Home() {
 }
 
 export async function loader() {
-	const res = await axios.get("http://localhost:3001/quizzes");
+	const res = await axios.get("http://localhost:3001/quiz");
 	return res.data.quizzes;
 }

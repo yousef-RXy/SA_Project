@@ -22,9 +22,6 @@ function AuthForm() {
 			>
 				<h1>{isLogin ? "Log in" : "Create a new user"}</h1>
 
-				{data && data.data && data.data.errobj && (
-					<p>{data.data.errobj.errorMessage}</p>
-				)}
 				{data && data.message && <p>{data.message}</p>}
 				<p>
 					<label htmlFor="email">Email</label>

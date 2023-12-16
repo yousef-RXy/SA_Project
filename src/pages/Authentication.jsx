@@ -47,11 +47,11 @@ export async function action({ request }) {
 		password,
 	};
 
-	const res = await axios.post(`http://localhost:3001/${mode}`, authData);
+	const res = await axios.post(`http://localhost:3001/auth/${mode}`, authData);
 
 	if (res.data.status === 422 || res.data.status === 401) {
 		console.log(res.data);
-		return res;
+		return res.data;
 	}
 
 	const resOK = res && res.data.status === 200 && res.statusText === "OK";
@@ -60,29 +60,29 @@ export async function action({ request }) {
 		console.log(res.data);
 		throw json({ message: "Could not authenticate user." }, { status: 500 });
 	}
-	const token = res.data.user.uid;
+	const _id = res.data._id;
 
 	const initUser = {
-		token: token,
+		_id,
 		points: 0,
 		subjects: {},
 		totalHours: 0,
 		totalGpa: 0,
 		isAdmin: false,
 	};
-	mode === "login" ? getUser(token) : updateUser(initUser);
+	mode === "login" ? getUser(_id) : updateUser(initUser);
 
 	localStorage.setItem("user", JSON.stringify(initUser));
 
 	return redirect(mode === "login" ? "/" : "/userdata");
 }
 
-async function getUser(token) {
-	const res = await axios.get("http://localhost:3001/user/" + token);
+async function getUser(_id) {
+	const res = await axios.get("http://localhost:3001/user/" + _id);
 
 	if (res.data.status === 422 || res.data.status === 401) {
 		console.log(res.data);
-		return res;
+		return res.data;
 	}
 
 	const resOK = res && res.data.status === 200 && res.statusText === "OK";
@@ -93,7 +93,7 @@ async function getUser(token) {
 
 	const data = { ...res.data.user };
 	const user = {
-		token: data.token,
+		_id: data._id,
 		points: data.points,
 		subjects: data.subjects,
 		totalHours: data.totalHours,

@@ -4,12 +4,10 @@ import { useNavigate, useNavigation, useLoaderData } from "react-router-dom";
 
 export default function AddFile() {
 	const navigate = useNavigate();
-	const subjectsObj = useLoaderData();
-	const subjects = Object.values(subjectsObj);
+	const subjects = useLoaderData();
 	const [fileName, setFileName] = useState("");
 	const navigation = useNavigation();
 	const isSubmitting = navigation.state === "loading";
-	console.log(navigation.state);
 	const [error, setError] = useState(false);
 
 	function changeHandler(e) {
@@ -24,7 +22,7 @@ export default function AddFile() {
 			setError(true);
 		} else {
 			axios
-				.post("http://localhost:3001/uploadfile", data)
+				.post("http://localhost:3001/file", data)
 				.then(() => {
 					navigate(`/files/${dataObj.dir.toLowerCase()}`);
 				})
@@ -67,10 +65,10 @@ export default function AddFile() {
 				>
 					{subjects.map((subject) => (
 						<option
-							key={subject.value}
-							value={subject.value}
+							key={subject.name}
+							value={subject.name}
 						>
-							{subject.value}
+							{subject.name}
 						</option>
 					))}
 				</select>

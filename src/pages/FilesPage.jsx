@@ -10,10 +10,10 @@ export default function Files() {
 			{files[0] !== undefined ? (
 				files.map((file) => (
 					<File
-						key={file.id}
+						key={file._id}
 						contentType={file.contentType}
 						name={file.name}
-						url={file.downloadURL}
+						url={file.url}
 					/>
 				))
 			) : (
@@ -26,7 +26,6 @@ export default function Files() {
 // eslint-disable-next-line no-unused-vars, react-refresh/only-export-components
 export async function loader({ request, params }) {
 	const subject = params.subId;
-
-	const res = await axios.get("http://localhost:3001/listfiles/" + subject);
+	const res = await axios.get("http://localhost:3001/file/" + subject);
 	return res.data.files;
 }

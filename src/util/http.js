@@ -10,12 +10,11 @@ export async function addQuiz() {
 			{ q: "what is cs", choices: ["cs", "se", "as", "cs"], answer: "cs" },
 		],
 	};
-	const res = await axios.post("http://localhost:3001/addquiz", { quiz });
+	const res = await axios.post("http://localhost:3001/quiz", { quiz });
 	console.log(res);
 }
 
 export async function updateUser(user) {
-	console.log("her");
 	const res = await axios.post("http://localhost:3001/user", user);
 
 	if (res.data.status === 422 || res.data.status === 401) {

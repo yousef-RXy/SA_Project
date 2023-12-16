@@ -2,8 +2,18 @@
 const multer = require("multer");
 const path = require("path");
 
+const storage = multer.diskStorage({
+	destination: async function (req, file, cb) {
+		return cb(null, "./data");
+	},
+	filename: async function (req, file, cb) {
+		const fileName = path.basename(file.originalname).toLowerCase();
+		return cb(null, fileName);
+	},
+});
+
 const upload = multer({
-	storage: multer.memoryStorage(),
+	storage,
 	limits: { fileSize: 10485760 },
 	fileFilter: async function (req, file, cb) {
 		checkFileType(file, cb);
@@ -25,5 +35,7 @@ function checkFileType(file, cb) {
 		cb("Error: unsuported file !!!");
 	}
 }
+
+// const upload =  multer({ dest: "uploads/" }).single("file");
 
 module.exports = { upload };

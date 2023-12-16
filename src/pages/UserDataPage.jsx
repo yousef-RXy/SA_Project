@@ -5,8 +5,7 @@ import { updateUser } from "../util/http";
 
 export default function UserData() {
 	const navigate = useNavigate();
-	const subjectsObj = useLoaderData();
-	const subjects = Object.values(subjectsObj);
+	const subjects = useLoaderData();
 	let user = JSON.parse(localStorage.getItem("user"));
 	const [error, setError] = useState(false);
 
@@ -45,13 +44,13 @@ export default function UserData() {
 				onSubmit={handleSubmit}
 			>
 				{subjects.map((sub) => {
-					const subject = [sub.value, sub.hours];
+					const subject = [sub.name, sub.hours];
 					return (
 						<div
 							className="flex items-center justify-between m-3 text-[22px]"
-							key={sub.id}
+							key={sub._id}
 						>
-							<label>{sub.value}</label>
+							<label>{sub.name}</label>
 							<input
 								type="checkbox"
 								name="box"
@@ -74,6 +73,6 @@ export default function UserData() {
 }
 
 export async function loader() {
-	const res = await axios.get("http://localhost:3001/subjects");
+	const res = await axios.get("http://localhost:3001/subject");
 	return res.data.subjects;
 }

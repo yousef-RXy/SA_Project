@@ -5,8 +5,9 @@ import Modal from "./Modal.jsx";
 /* eslint-disable react/prop-types */
 export default function File({ name, contentType, url }) {
 	const isPDF = contentType === "application/pdf";
+	const accessUrl = "http://localhost:3001/" + url;
 	const clickHandler = () => {
-		isPDF ? window.open(url) : setModalOpen(true);
+		isPDF ? window.open(accessUrl) : setModalOpen(true);
 	};
 	const [modalOpen, setModalOpen] = useState(false);
 
@@ -14,7 +15,7 @@ export default function File({ name, contentType, url }) {
 		<div className=" transition-all drop-shadow place-items-center hover:bg-sky-100 bg-neutral-100 rounded-3xl grid gap-y-2 grid-cols-1 grid-rows-3 p-4">
 			<img
 				className="row-span-2 w-28"
-				src={isPDF ? PDFLogo : url}
+				src={isPDF ? PDFLogo : accessUrl}
 			/>
 			<p className="text-center w-40 text-ellipsis overflow-hidden">{name}</p>
 			<button
@@ -27,7 +28,7 @@ export default function File({ name, contentType, url }) {
 			{modalOpen && (
 				<Modal
 					setOpenModal={setModalOpen}
-					url={url}
+					url={accessUrl}
 				/>
 			)}
 		</div>
