@@ -1,4 +1,8 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+	createBrowserRouter,
+	RouterProvider,
+	Navigate,
+} from "react-router-dom";
 import Files, { loader as fetchFile } from "./pages/FilesPage";
 import Home, { loader as eventsLoader } from "./pages/HomePage";
 import Quiz, { loader as fetchQuiz } from "./pages/QuizPage";
@@ -40,6 +44,10 @@ const router = createBrowserRouter([
 				path: "files/:subId",
 				element: <Files />,
 				loader: fetchFile,
+			},
+			{
+				path: "quizzes",
+				element: <Navigate to="/" />,
 			},
 			{
 				path: "quizzes/:quizId",
