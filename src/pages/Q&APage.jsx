@@ -41,10 +41,12 @@ export default function QA() {
 					<UserShowQuestions questions={questions} />
 				)}
 			</ul>
-			<AddQuestionForm
-				questions={questions}
-				onAdd={handleQuestionSubmit}
-			/>
+			{!isAdmin && (
+				<AddQuestionForm
+					questions={questions}
+					onAdd={handleQuestionSubmit}
+				/>
+			)}
 		</div>
 	);
 }

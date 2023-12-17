@@ -25,23 +25,17 @@ export async function action({ request }) {
 	const password = data.get("password");
 	if (!isNotEmpty(email))
 		return json({ message: "email is empty." }, { status: 500 });
-	if (!isNotEmpty(password))
-		return json({ message: "Password is empty." }, { status: 500 });
 	if (!hasMinLength(password, 6))
 		return json({ message: "Password is Short." }, { status: 500 });
 	if (mode === "signup") {
 		const passConfirm = data.get("password-confirmation");
-		if (!isNotEmpty(passConfirm))
-			return json(
-				{ message: "Password-confirmation is empty." },
-				{ status: 500 }
-			);
-		else if (!isEqualsToOtherValue(password, passConfirm))
+		if (!isEqualsToOtherValue(password, passConfirm))
 			return json(
 				{ message: "The Password and the Password-confirmation is not equal." },
 				{ status: 500 }
 			);
 	}
+
 	const authData = {
 		email,
 		password,

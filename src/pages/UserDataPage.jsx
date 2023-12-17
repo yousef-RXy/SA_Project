@@ -7,7 +7,7 @@ export default function UserData() {
 	const navigate = useNavigate();
 	const subjects = useLoaderData();
 	let user = JSON.parse(localStorage.getItem("user"));
-	const [error, setError] = useState(false);
+	const [error, setError] = useState("");
 
 	function handleSubmit(event) {
 		event.preventDefault();
@@ -17,10 +17,27 @@ export default function UserData() {
 		const data = Object.fromEntries(subject.entries());
 		data.box = boxChannel;
 
-		if (data.box.length < 4 || data.box.length > 7) {
-			setError(true);
+		let min = 4,
+			max = 4;
+
+		if (user.totalGpa >= 0) {
+			max = 6;
+		}
+
+		if (user.totalGpa >= 2) {
+			max = 4;
+			if (user.totalGpa >= 3) {
+				max += 2;
+				if (user.totalGpa >= 3.4) {
+					max += 1;
+				}
+			}
+		}
+
+		if (data.box.length < min || data.box.length > max) {
+			setError(`You can register ${min}:${max} subjects only`);
 		} else {
-			setError(false);
+			setError("");
 			let obj;
 			let x = 0;
 			data.box.forEach((e) => {
@@ -63,11 +80,7 @@ export default function UserData() {
 					Save
 				</button>
 			</form>
-			{error && (
-				<p className=" text-center text-red-500 m-1">
-					You can register 4 or 7 subjects only
-				</p>
-			)}
+			{error !== "" && <p className=" text-center text-red-500 m-1">{error}</p>}
 		</div>
 	);
 }
