@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // Important requires
 const express = require("express");
 const mongoose = require("mongoose");
@@ -17,9 +18,8 @@ mongoose
 			console.log("Server is running on " + PORT);
 		})
 	)
-	.catch((err) => {
-		console.log(err);
-		console.log(hi);
+	.catch(() => {
+		console.log("error");
 	});
 
 app.use(express.json());
@@ -27,12 +27,13 @@ app.use(express.json());
 // enable requests from other URLs
 app.use(cors());
 
-// allow fetting static file
+// allow fetching static file
 app.use(express.static("data"));
 
 // import routes
 const authRoute = require("./route/auth");
 const fileRoute = require("./route/file.js");
+const questionRoute = require("./route/question");
 const quizRoute = require("./route/quiz");
 const subjectRoute = require("./route/subject");
 const userRoute = require("./route/user");
@@ -40,6 +41,7 @@ const userRoute = require("./route/user");
 //use routes
 app.use("/auth", authRoute);
 app.use("/file", fileRoute);
+app.use("/question", questionRoute);
 app.use("/quiz", quizRoute);
 app.use("/subject", subjectRoute);
 app.use("/user", userRoute);

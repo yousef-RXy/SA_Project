@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate, useNavigation, useLoaderData } from "react-router-dom";
+import { useNavigate, useNavigation } from "react-router-dom";
+import SelectSubject from "../components/SelectSubject";
 
 export default function AddFile() {
 	const navigate = useNavigate();
-	const subjects = useLoaderData();
 	const [fileName, setFileName] = useState("");
 	const navigation = useNavigation();
 	const isSubmitting = navigation.state === "loading";
@@ -57,21 +57,7 @@ export default function AddFile() {
 					/>
 				</div>
 
-				<select
-					name="dir"
-					id="dir"
-					required
-					className=" text-lg py-4 pl-5 pr-28 border-2 border-[#D4D4D8] rounded cursor-pointer"
-				>
-					{subjects.map((subject) => (
-						<option
-							key={subject.name}
-							value={subject.name}
-						>
-							{subject.name}
-						</option>
-					))}
-				</select>
+				<SelectSubject />
 				<button className=" transition-all text-white bg-[#005cc8] px-3 py-2 text-lg uppercase rounded-xl cursor-pointer hover:bg-[#004a9e]">
 					{isSubmitting ? "Submitting..." : "Upload"}
 				</button>

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // Important requires
 const express = require("express");
 const router = express.Router();
@@ -7,9 +8,13 @@ const Subject = require("../models/subject");
 
 // get & post methods
 router.post("/", async (req, res) => {
-	const subject = new Subject({ ...req.body });
-	const result = await subject.save();
-	res.send({ status: 200, subjectID: result._id });
+	try {
+		const subject = new Subject({ ...req.body });
+		const result = await subject.save();
+		res.send({ status: 200, subjectID: result._id });
+	} catch (error) {
+		res.send({ status: 401, err: error.message });
+	}
 });
 
 router.get("/", async (req, res) => {

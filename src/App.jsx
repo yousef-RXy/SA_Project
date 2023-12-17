@@ -11,12 +11,21 @@ import AddFile from "./pages/AddFilePage.jsx";
 import Folders from "./pages/FoldersPage.jsx";
 import GpaCalculator from "./pages/GpaCalculatorPage.jsx";
 import AddQuizForm from "./components/AddQuizForm.jsx";
+import MainNavigation from "./components/MainNavigation";
+import ErrorPage from "./pages/Error";
+import QA, { loader as fetchQuestions } from "./pages/Q&APage.jsx";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <RootLayout />,
-		// 	errorElement: <ErrorPage />,
+
+		errorElement: (
+			<>
+				<MainNavigation />
+				<ErrorPage />
+			</>
+		),
 		children: [
 			{
 				index: true,
@@ -49,18 +58,37 @@ const router = createBrowserRouter([
 			{
 				path: "addfile",
 				element: <AddFile />,
-				loader: fetchSubjects,
 			},
 			{
 				path: "addquiz",
 				element: <AddQuizForm />,
+				loader: fetchSubjects,
+			},
+			{
+				path: "qa",
+				element: <QA />,
+				loader: fetchQuestions,
 			},
 		],
 	},
 	{
 		path: "/auth",
 		element: <AuthenticationPage />,
+		errorElement: (
+			<div className="col-span-2 row-span-2 ">
+				<ErrorPage />
+			</div>
+		),
 		action: authAction,
+	},
+	{
+		path: "*",
+		element: <ErrorPage />,
+		errorElement: (
+			<div className="col-span-2 row-span-2 ">
+				<ErrorPage />
+			</div>
+		),
 	},
 ]);
 

@@ -1,136 +1,196 @@
 import { useState } from "react";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { addQuiz } from "../util/http";
 
 const AddQuizForm = () => {
-	const [quizTitle, setQuizTitle] = useState("");
-	const [question, setQuestion] = useState("");
-	const [options, setOptions] = useState(["", "", ""]);
-	const [correctOption, setCorrectOption] = useState("");
+	const subjectsObj = useLoaderData();
+	const navigate = useNavigate();
+	const subjects = Object.values(subjectsObj);
 
-	const handleSubmit = (e) => {
+	const [subject, setSubject] = useState("");
+	const [quizName, setQuizName] = useState("");
+	const [error, setError] = useState("");
+	const [questions, setQuestions] = useState([
+		{ q: "", choices: ["", "", "", ""], answer: "" },
+		{ q: "", choices: ["", "", "", ""], answer: "" },
+		{ q: "", choices: ["", "", "", ""], answer: "" },
+		{ q: "", choices: ["", "", "", ""], answer: "" },
+		{ q: "", choices: ["", "", "", ""], answer: "" },
+	]);
+
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		console.log("Form submitted:", {
-			quizTitle,
-			question,
-			options,
-			correctOption,
-		});
+		// Create the quiz object
+		const quiz = {
+			name: quizName,
+			sub: subject,
+			questions: questions.map((q) => ({
+				q: q.q,
+				choices: q.choices,
+				answer: q.answer,
+			})),
+		};
 
-		// const quiz = {
-		// 	name: quizTitle,
-		// 	sub: "sa",
-		// 	questions: [{ q: question, choices: options, answer: correctOption }],
-		// };
+		// Log the quiz object (you can modify this part according to your use case)
+		const quizId = await addQuiz(quiz);
+		console.log(quizId);
+		if (quizId !== -1) navigate("/quizzes/" + quizId, { replace: true });
+		else setError("invalid quiz data");
 
-		setQuizTitle("");
-		setQuestion("");
-		setOptions(["", "", ""]);
-		setCorrectOption("");
+		// Reset form fields after submission
+		// setSubject("");
+		// setQuizName("");
+		// setQuestions([
+		// 	{ q: "", choices: ["", "", "", ""], answer: "" },
+		// 	{ q: "", choices: ["", "", "", ""], answer: "" },
+		// 	{ q: "", choices: ["", "", "", ""], answer: "" },
+		// 	{ q: "", choices: ["", "", "", ""], answer: "" },
+		// 	{ q: "", choices: ["", "", "", ""], answer: "" },
+		// ]);
 	};
 
 	return (
-		<>
-			<div className="container-fluid align-content-center">
-				<div className="row align-content-center">
-					<div className="col-md-5 QuizeesSection example">
-						<h2 className="sectionTitle">
-							<i className="fas fa-graduation-cap"></i> Add Quiz
-						</h2>
+		<div className="container mx-auto p-4">
+			<div className="flex justify-center">
+				<div className="w-full md:w-1/2 bg-white rounded-lg shadow-lg p-8">
+					<h2 className="text-2xl font-bold mb-8">Add Quiz</h2>
 
-						<form onSubmit={handleSubmit}>
-							<div className="mb-3">
-								<label
-									htmlFor="quizTitle"
-									className="form-label"
-								>
-									{" "}
-									Quiz Title:{" "}
-								</label>
-								<input
-									type="text"
-									className="form-control"
-									id="quizTitle"
-									value={quizTitle}
-									onChange={(e) => setQuizTitle(e.target.value)}
-								/>
-							</div>
-
-							<div className="mb-3">
-								<label
-									htmlFor="question"
-									className="form-label"
-								>
-									Question:
-								</label>
-								<textarea
-									className="form-control"
-									id="question"
-									value={question}
-									onChange={(e) => setQuestion(e.target.value)}
-								/>
-							</div>
-
-							<div className="mb-3">
-								<label
-									htmlFor="options"
-									className="form-label"
-								>
-									Options:
-								</label>
-								{options.map((option, index) => (
-									<div
-										key={index}
-										className="mb-2"
-									>
-										<input
-											type="text"
-											className="form-control"
-											value={option}
-											onChange={(e) => {
-												const updatedOptions = [...options];
-												updatedOptions[index] = e.target.value;
-												setOptions(updatedOptions);
-											}}
-										/>
-									</div>
-								))}
-							</div>
-
-							<div className="mb-3">
-								<label
-									htmlFor="correctOption"
-									className="form-label"
-								>
-									Correct Option:
-								</label>
-								<select
-									className="form-select"
-									value={correctOption}
-									onChange={(e) => setCorrectOption(e.target.value)}
-								>
-									{options.map((option, index) => (
-										<option
-											key={index}
-											value={option}
-										>
-											{option}
-										</option>
-									))}
-								</select>
-							</div>
-
-							<button
-								type="submit"
-								className="transition-all mx-3 px-3 text-lg text-white rounded-xl bg-[#005cc8] hover:bg-[#004a9e]"
+					<form onSubmit={handleSubmit}>
+						{/* Subject Name Input */}
+						<div className="mb-6">
+							<label
+								htmlFor="subject"
+								className="block text-sm font-medium text-gray-700"
 							>
-								{" "}
-								Submit{" "}
-							</button>
-						</form>
-					</div>
+								Subject Name:
+							</label>
+
+							<select
+								required
+								value={subject}
+								onChange={(e) => setSubject(e.target.value)}
+								className="mt-1 p-2 block w-full border rounded-md"
+							>
+								{subjects.map((subject) => (
+									<option
+										key={subject.name}
+										value={subject.name}
+									>
+										{subject.name}
+									</option>
+								))}
+							</select>
+						</div>
+
+						{/* Quiz Name Input */}
+						<div className="mb-6">
+							<label
+								htmlFor="quizName"
+								className="block text-sm font-medium text-gray-700"
+							>
+								Quiz Name:
+							</label>
+							<input
+								type="text"
+								value={quizName}
+								onChange={(e) => setQuizName(e.target.value)}
+								className="mt-1 p-2 block w-full border rounded-md"
+							/>
+						</div>
+
+						{/* Questions Input */}
+						{questions.map((q, index) => (
+							<div
+								key={index}
+								className="mb-8"
+							>
+								<h4 className="text-lg font-semibold mb-2">
+									Question {index + 1}
+								</h4>
+
+								<div className="mb-4">
+									<label
+										htmlFor={`question-${index}`}
+										className="block text-sm font-medium text-gray-700"
+									>
+										Question:
+									</label>
+									<textarea
+										value={q.q}
+										onChange={(e) => {
+											const updatedQuestions = [...questions];
+											updatedQuestions[index].q = e.target.value;
+											setQuestions(updatedQuestions);
+										}}
+										className="mt-1 p-2 block w-full border rounded-md"
+									/>
+								</div>
+
+								<div className="mb-4">
+									<label
+										htmlFor={`choices-${index}`}
+										className="block text-sm font-medium text-gray-700"
+									>
+										Choices:
+									</label>
+									{q.choices.map((choice, choiceIndex) => (
+										<input
+											key={choiceIndex}
+											type="text"
+											value={choice}
+											onChange={(e) => {
+												const updatedQuestions = [...questions];
+												updatedQuestions[index].choices[choiceIndex] =
+													e.target.value;
+												setQuestions(updatedQuestions);
+											}}
+											className="mt-1 p-2 block w-full border rounded-md mb-2"
+										/>
+									))}
+								</div>
+
+								<div className="mb-4">
+									<label
+										htmlFor={`answer-${index}`}
+										className="block text-sm font-medium text-gray-700"
+									>
+										Correct Answer:
+									</label>
+									<select
+										value={q.answer}
+										onChange={(e) => {
+											const updatedQuestions = [...questions];
+											updatedQuestions[index].answer = e.target.value;
+											setQuestions(updatedQuestions);
+										}}
+										className="mt-1 p-2 block w-full border rounded-md"
+									>
+										{q.choices.map((choice, choiceIndex) => (
+											<option
+												key={choiceIndex}
+												value={choice}
+											>
+												{choice}
+											</option>
+										))}
+									</select>
+								</div>
+							</div>
+						))}
+
+						{/* Submit Button */}
+						<button
+							type="submit"
+							className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+						>
+							Submit
+						</button>
+						{error && <p>{error}</p>}
+					</form>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 };
 

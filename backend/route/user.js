@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // Important requires
 const express = require("express");
 const router = express.Router();
@@ -13,8 +14,12 @@ router.post("/", async (req, res) => {
 	if (isExist)
 		result = await User.findByIdAndUpdate(user._id, user, { new: true });
 	else {
-		const userQury = new User({ ...req.body });
-		result = await userQury.save();
+		try {
+			const userQuery = new User({ ...req.body });
+			result = await userQuery.save();
+		} catch (error) {
+			res.send({ status: 401, err: error.message });
+		}
 	}
 	res.send({ status: 200, user: result._id });
 });

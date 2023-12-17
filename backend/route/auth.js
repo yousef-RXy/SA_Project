@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable no-undef */
 // Important requires
 const bcrypt = require("bcrypt");
 const express = require("express");
@@ -16,13 +18,17 @@ router.post("/signup", async (req, res) => {
 	if (!regex.test(email)) {
 		resObj = { status: 422, message: "User email is not valid" };
 	} else {
-		const isRepeted = await Auth.findOne({ email });
-		if (isRepeted !== null) {
+		const isRepeated = await Auth.findOne({ email });
+		if (isRepeated !== null) {
 			resObj = { status: 422, message: "User email is signup before" };
 		} else {
-			const auth = new Auth({ email, password });
-			const result = await auth.save();
-			resObj = { status: 200, _id: result._id };
+			try {
+				const auth = new Auth({ email, password });
+				const result = await auth.save();
+				resObj = { status: 200, _id: result._id };
+			} catch (error) {
+				res.send({ status: 401, err: error.message });
+			}
 		}
 	}
 

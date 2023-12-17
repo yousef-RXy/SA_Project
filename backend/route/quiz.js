@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // Important requires
 const express = require("express");
 const router = express.Router();
@@ -7,9 +8,13 @@ const Quiz = require("../models/quiz");
 
 // get & post methods
 router.post("/", async (req, res) => {
-	const quiz = new Quiz({ ...req.body });
-	const result = await quiz.save();
-	res.send({ status: 200, quizID: result._id });
+	try {
+		const quiz = new Quiz({ ...req.body });
+		const result = await quiz.save();
+		res.send({ status: 200, quizID: result._id });
+	} catch (error) {
+		res.send({ status: 401, err: error.message });
+	}
 });
 
 router.get("/", async (req, res) => {
