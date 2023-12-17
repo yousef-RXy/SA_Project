@@ -4,6 +4,7 @@ import { IoAddOutline } from "react-icons/io5";
 import { CiFileOn, CiSquareCheck } from "react-icons/ci";
 import { CiFolderOn } from "react-icons/ci";
 import { CiUser } from "react-icons/ci";
+import { RiQuestionAnswerLine } from "react-icons/ri";
 
 // eslint-disable-next-line react/prop-types
 function MainNavigation() {
@@ -87,6 +88,14 @@ function MainNavigation() {
 								className={({ isActive }) => (isActive ? active : def)}
 							>
 								<CiUser className="w-full text-2xl" />
+							</NavLink>
+						</li>
+						<li>
+							<NavLink
+								to="qa"
+								className={({ isActive }) => (isActive ? active : def)}
+							>
+								<RiQuestionAnswerLine className="w-full text-2xl" />
 							</NavLink>
 						</li>
 					</ul>
