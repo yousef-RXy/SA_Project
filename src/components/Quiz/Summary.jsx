@@ -7,6 +7,10 @@ export default function Summary({ userAnswers, QUESTIONS }) {
 	let total_points = 10;
 	const skippedAnswers = userAnswers.filter((answer) => answer === null);
 
+	let user = JSON.parse(localStorage.getItem("user"));
+	const gpa = user.totalGpa;
+	console.log(gpa);
+
 	const correctAnswers = userAnswers.filter(
 		(answer, index) => answer === QUESTIONS[index].answer
 	);
@@ -28,12 +32,11 @@ export default function Summary({ userAnswers, QUESTIONS }) {
 	}
 
 	useEffect(() => {
-		let user = JSON.parse(localStorage.getItem("user"));
 		const points = user.points + total_points;
 		user = { ...user, points };
 		localStorage.setItem("user", JSON.stringify(user));
 		updateUser(user);
-	}, [total_points]);
+	}, [total_points, user]);
 
 	return (
 		<div id="summary">
