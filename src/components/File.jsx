@@ -1,6 +1,6 @@
 import PDFLogo from "../assets/pdf-svgrepo-com.svg";
 import { useState } from "react";
-import Modal from "./Modal.jsx";
+import Modal from "./Modal";
 
 /* eslint-disable react/prop-types */
 export default function File({ name, contentType, url }) {

@@ -13,7 +13,7 @@ import UserShowQuestions from "../components/Q&A/UserShowQuestions";
 export default function QA() {
 	const initializeQuestions = useLoaderData();
 	const [questions, setQuestions] = useState(initializeQuestions);
-	let { isAdmin } = JSON.parse(localStorage.getItem("user"));
+	const { isAdmin } = JSON.parse(localStorage.getItem("user"));
 
 	const handleQuestionSubmit = (newQuestion) => {
 		setQuestions((state) => [...state, newQuestion]);
@@ -41,7 +41,6 @@ export default function QA() {
 					<UserShowQuestions questions={questions} />
 				)}
 			</ul>
-			<hr />
 			<AddQuestionForm
 				questions={questions}
 				onAdd={handleQuestionSubmit}

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { addQuiz } from "../util/http";
 
-const AddQuizForm = () => {
+const AddQuiz = () => {
 	const subjectsObj = useLoaderData();
 	const navigate = useNavigate();
 	const subjects = Object.values(subjectsObj);
@@ -194,4 +194,4 @@ const AddQuizForm = () => {
 	);
 };
 
-export default AddQuizForm;
+export default AddQuiz;

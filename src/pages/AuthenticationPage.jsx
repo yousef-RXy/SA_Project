@@ -1,6 +1,6 @@
 import axios from "axios";
 import { json, redirect } from "react-router-dom";
-import AuthForm from "../components/AuthForm";
+import AuthForm from "../components/Auth/AuthForm";
 import { updateUser } from "../util/http";
 import {
 	hasMinLength,

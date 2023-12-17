@@ -42,15 +42,21 @@ export default function AddQuestionForm({ onAdd, questions }) {
 		}
 	};
 	return (
-		<div>
-			<h2>Add a Question</h2>
-			<form onSubmit={onSubmit}>
-				<SelectSubject />
+		<div className="flex flex-col p-5 m-5 bg-[#FAFAFA] border-solid border-2 border-black rounded-md">
+			<h2 className=" text-center text-lg font-bold">Add a Question</h2>
+			<form
+				onSubmit={onSubmit}
+				className="flex flex-col gap-3 mt-3"
+			>
 				<textarea
 					placeholder="Enter your question"
+					className="border-solid border-2 border-[#D4D4D8] rounded-md p-3"
 					name="question"
 				></textarea>
-				<button type="submit">Submit</button>
+				<SelectSubject />
+				<button className="transition-all text-white bg-[#005cc8] px-3 py-2 text-lg uppercase rounded-md cursor-pointer hover:bg-[#004a9e]">
+					Submit
+				</button>
 			</form>
 			{error !== "" && <p className=" text-center text-red-500 m-1">{error}</p>}
 		</div>

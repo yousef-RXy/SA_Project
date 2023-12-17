@@ -5,27 +5,27 @@ import Quiz, { loader as fetchQuiz } from "./pages/QuizPage";
 import UserData, { loader as fetchSubjects } from "./pages/UserDataPage";
 import AuthenticationPage, {
 	action as authAction,
-} from "./pages/Authentication.jsx";
-import RootLayout from "./pages/Root.jsx";
+} from "./pages/AuthenticationPage.jsx";
+import RootLayout from "./Layout/RootLayout.jsx";
 import AddFile from "./pages/AddFilePage.jsx";
 import Folders from "./pages/FoldersPage.jsx";
 import GpaCalculator from "./pages/GpaCalculatorPage.jsx";
-import AddQuizForm from "./components/AddQuizForm.jsx";
+import AddQuiz from "./pages/AddQuizPage.jsx";
 import MainNavigation from "./components/MainNavigation";
-import ErrorPage from "./pages/Error";
+import ErrorPage from "./pages/ErrorPage.jsx";
 import QA, { loader as fetchQuestions } from "./pages/Q&APage.jsx";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <RootLayout />,
-
 		errorElement: (
 			<>
 				<MainNavigation />
 				<ErrorPage />
 			</>
 		),
+
 		children: [
 			{
 				index: true,
@@ -61,7 +61,7 @@ const router = createBrowserRouter([
 			},
 			{
 				path: "addquiz",
-				element: <AddQuizForm />,
+				element: <AddQuiz />,
 				loader: fetchSubjects,
 			},
 			{

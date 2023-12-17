@@ -1,18 +1,12 @@
-import AnswerQuestionForm from "./AnswerQuestionForm";
+import Question from "./Question";
 
 export default function AdminShowQuestions({ questions, onAnswerSubmit }) {
-	return questions.map((q, index) => (
-		<li key={index}>
-			<strong>Course: {q.courseName}</strong>
-			<p>Question: {q.question}</p>
-			{q.answer !== "" ? (
-				<p>Answer: {q.answer}</p>
-			) : (
-				<AnswerQuestionForm
-					index={index}
-					onAnswer={onAnswerSubmit}
-				/>
-			)}
-		</li>
+	return questions.map((question, index) => (
+		<Question
+			key={index}
+			index={index}
+			onAnswerSubmit={onAnswerSubmit}
+			question={question}
+		/>
 	));
 }
